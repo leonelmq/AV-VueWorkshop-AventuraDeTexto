@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.12.7/vue.min.js"></script>
+    <style>
+        html{
+            color:black
+        }
+        body{
+            color:black;
+        }
+        *{
+            color:black
+        }
+        .body-on {
+        background-color: #dddddd;
+        }
+    </style>
+</head>
+<body class="text-center body body-on">
+    <div id="app">
+        <button v-on="click: empezar" v-class="btn-danger: lights, btn-success: !lights" class="btn">
+            Empezar
+        </button>
+        <div v-if="nive1">
+            <p>
+                {{message}}
+            </p>
+            <p>
+                Mi Nombre es: 
+                <input type="text" placeholder="Tu Nombre" value="" v-model='name'>
+            </p>
+            <p v-if="name !== ''">Un gusto en conocerte {{name}}. 
+                <br>
+                Que pokemon quieres ser?
+                <br>
+                <input type="radio" id="one" value="pikachu" v-model="picked">
+                <label for="one">Pikachu</label>
+                <br>
+                <input type="radio" id="two" value="Bolbasour" v-model="picked">
+                <label for="two">Bolbasour</label>
+                <br>
+            </p>
+            <pre v-if="picked !== 'none'">{{ pokemon[picked]}}</pre>
+            <button v-show="picked !== 'none'">Siguiente Nivel</button>
+        </div>
+    </div>
+    
+    <script>
+    new Vue({
+        el: '#app',
+        data: {
+            name: '',
+            nive1:false,
+            picked: 'none',
+            message: 'Buenos Dias Pequeño Pokemon. Cual es tu nombre?',
+            pokemon: { none: '' , pikachu: `
+$$$b  '---.__
+  "$$b        '--.                          ___.---uuudP
+   '$$b           '.__.------.__     __.---'      $$$$"              .
+     "$b          -'            '-.-'            $$$"              .'|
+       ".                                       d$"             _.'  |
+         '.   /                              ..."             .'     |
+           './                           ..::-'            _.'       |
+            /                         .:::-'            .-'         .'
+           :                          ::''\\          _.'            |
+          .' .-.             .-.           '.      .'               |
+          : /'$$|           .@"$\\           '.   .'              _.-'
+         .'|$u$$|          |$$,$$|           |  <            _.-'
+         | ':$$:'          :$$$$$:           '.  '.       .-'
+         :                  '"--'             |    '-.     \\
+        :##.       ==             .###.       '.      '.    '\\
+        |##:                      :###:        |        >     >
+        |#'     '..''..'          '###'        x:      /     /
+         \\                                   xXX|     /    ./
+          \\                                xXXX'|    /   ./
+          /'-.                                  '.  /   /
+         :    '-  ...........,                   | /  .'
+         |         ':::::::'       .            |<    '.
+         |             '          |           x| \\ '.:'.
+         |                         .'    /'   xXX|  ':'M'M':.
+         |    |                    ;    /:' xXXX'|  -'MMMMM:'
+         '.  .'                   :    /:'       |-'MMMM.-'
+          |  |                   .'   /'        .'MMM.-'
+          ''''                   :  ,'          |MMM<
+            |                     ''            |tbap\\
+             \\                                  :MM.-'
+              \\                 |              .''
+               \\.               '.            /
+                /     .:::::::.. :           /
+               |     .:::::::::::'.         /
+               |   .:::------------\\       /
+              /   .''               >::'  /
+              '',:                 :    .'
+                                   ':.:'`,
+        Bolbasour: `
+                                ,'"'.,./.
+                             ,'        Y',"..
+                           ,'           \\  | \\
+                          /              . |  '
+                         /               | |   \\
+            __          .                | |    .
+       _   \\  '. ---.   |                | j    |
+      / '-._\\   'Y   \\  |                |.     |
+     _'.    '    \\   \\ |..              '      |,-'""7,....
+     l     '-.     . , '|  | , |'. , ,  /,     ,'    '/   ,'_,.-.
+     '-..     '-.  : :     |/ '   ' "\\,' | _  /          '-'    /___
+      \\""' __.,.-'.: :        /   /._    l'.,'
+       '--,   _.-' '".           /__ ''-.' '         .
+       ,---..._,.--"""""""--.__..----,-.'   .  /    .'   ,.--
+       |                          ,':| /    | /     ;.,-'--      ,.-
+       |     .---.              .'  :|'     |/ ,.-='"-.'"'' _   -.'
+       /    \\    /               '. :|--.  _L,"---.._        "----'
+     ,' '.   \\ ,'           _,     '''   '.-'       '-  -..___,'
+    . ,.  .   '   __     .-'  _.-           '.     .__    \\
+    |. |'        "  ;   !   ,.  |             '.    '.''---'
+    ,| |C\\       ' /    | ,' |(]|            -. |-..--'
+   /  "'--'       '      /___|__]        '.  '- |'.
+  .       ,'                   ,   /       .    '. \\
+    \\                      .,-'  ,'         .     '-.
+     x---..'.  -'  __..--'"/"""""  ,-.      |   |   |
+    / \\--._'-.,.--'     _'-    _. ' /       |     -.|
+   ,   .   '-..__ ...--'  _,.-' | '   ,.-.  ;   /  '|
+  .  _,'         '"-----""      |    '   | /  ,'    ;
+  |-'  .-.    '._               |     '._// ,'     /
+ _|    '-'   _,' "'--.._________|        ','    _ /.
+//\\   ,-._.'"/\\__,.   _,"     /_\\__/'. /'.-.'.-/_,'-' mh
+'-"'"' v'    '"  '-'-"              '-''-'  ''
+`}
+        },
+        methods: {
+            empezar() {
+                this.nive1 = true
+            }
+        }
+    });
+    </script>
+    
+</body>
+</html>
