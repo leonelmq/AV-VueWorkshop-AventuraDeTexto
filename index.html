@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.12.7/vue.min.js"></script>
+    <script src="https://vuejs.org/js/vue.js"></script>
     <style>
         html{
             color:black
@@ -22,10 +22,10 @@
 </head>
 <body class="text-center body body-on">
     <div id="app">
-        <button v-on="click: empezar" v-class="btn-danger: lights, btn-success: !lights" class="btn">
+        <button v-on:click="empezar" class="btn">
             Empezar
         </button>
-        <div v-if="nive1">
+        <div v-if="nivel1">
             <p>
                 {{message}}
             </p>
@@ -36,13 +36,7 @@
             <p v-if="name !== ''">Un gusto en conocerte {{name}}. 
                 <br>
                 Que pokemon quieres ser?
-                <br>
-                <input type="radio" id="one" value="pikachu" v-model="picked">
-                <label for="one">Pikachu</label>
-                <br>
-                <input type="radio" id="two" value="Bolbasour" v-model="picked">
-                <label for="two">Bolbasour</label>
-                <br>
+                <poke v-on:changepoke="changepokeroot" />
             </p>
             <pre v-if="picked !== 'none'">{{ pokemon[picked]}}</pre>
             <button v-show="picked !== 'none'">Siguiente Nivel</button>
@@ -50,11 +44,34 @@
     </div>
     
     <script>
+
+        Vue.component('poke', {
+            data: function() {
+                return {
+                    picked: 'none'
+                }
+            },
+            template: `<div><br>
+            <input type="radio" id="one" value="pikachu" v-model="picked">
+            <label for="one">Pikachu</label>
+            <br>
+            <input type="radio" id="two" value="Bolbasour" v-model="picked">
+            <label for="two">Bolbasour</label>
+            <br></div>
+            `,
+            watch: {
+                picked: function(newRole)
+                { 
+                    this.$emit('changepoke', this.picked)
+                }
+            }
+        })
     new Vue({
         el: '#app',
-        data: {
+        data:function() {
+            return {
             name: '',
-            nive1:false,
+            nivel1:false,
             picked: 'none',
             message: 'Buenos Dias Pequeño Pokemon. Cual es tu nombre?',
             pokemon: { none: '' , pikachu: `
@@ -130,10 +147,15 @@ $$$b  '---.__
 //\\   ,-._.'"/\\__,.   _,"     /_\\__/'. /'.-.'.-/_,'-' mh
 '-"'"' v'    '"  '-'-"              '-''-'  ''
 `}
+            }
+
         },
         methods: {
-            empezar() {
-                this.nive1 = true
+            empezar: function() {
+                this.nivel1 = true
+            },
+            changepokeroot: function(val) {
+                this.picked = val
             }
         }
     });
