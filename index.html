@@ -22,59 +22,70 @@
 </head>
 <body class="text-center body body-on">
     <div id="app">
-        <button v-on:click="empezar" class="btn">
-            Empezar
-        </button>
+        <button v-on:click="empezar" class="btn">Empezar</button>
         <div v-if="nivel1">
-            <p>
-                {{message}}
-            </p>
-            <p>
-                Mi Nombre es: 
-                <input type="text" placeholder="Tu Nombre" value="" v-model='name'>
-            </p>
+            <p>{{message}}</p>
+            <p>Mi Nombre es: <input type="text" placeholder="Tu Nombre" value="" v-model='name'></p>
+
             <p v-if="name !== ''">Un gusto en conocerte {{name}}. 
                 <br>
                 Que pokemon quieres ser?
-                <poke v-on:changepoke="changepokeroot" />
+                <poke v-on:changepoke="changepokeroot" :pokemonlist="pokemon"></poke>
             </p>
+            <!-- V-IF es que  NO EXISTE EL COMPONENTE si es falso -->
             <pre v-if="picked !== 'none'">{{ pokemon[picked]}}</pre>
+            <!-- V-show es que  NO se muestra PERO EXISTE EL COMPONENTE si es falso -->
             <button v-show="picked !== 'none'">Siguiente Nivel</button>
+
         </div>
     </div>
     
     <script>
-
         Vue.component('poke', {
+            props: {
+                pokemonlist: Object
+            },
             data: function() {
                 return {
                     picked: 'none'
                 }
             },
-            template: `<div><br>
-            <input type="radio" id="one" value="pikachu" v-model="picked">
-            <label for="one">Pikachu</label>
-            <br>
-            <input type="radio" id="two" value="Bolbasour" v-model="picked">
-            <label for="two">Bolbasour</label>
-            <br></div>
+            template: `
+            <div>
+                {{ pokemonlist }}
+                <ul>
+                    <li v-for="(item, index) in GetObjectKeys(pokemonlist)">
+                        <input type="radio" :id="'radio'+ index" :value="item" v-model="picked">
+                        <label :for="'radio'+ index">{{ item }}</label>
+                        <br>
+                    </li>
+                </ul>
+            </div>
             `,
             watch: {
                 picked: function(newRole)
                 { 
                     this.$emit('changepoke', this.picked)
                 }
+            },
+            methods: {
+                GetObjectKeys: function(pokemonlist) {
+                    return Object.keys(pokemonlist)
+                }
             }
         })
+    
     new Vue({
         el: '#app',
-        data:function() {
+        data: function() {
             return {
-            name: '',
-            nivel1:false,
-            picked: 'none',
-            message: 'Buenos Dias Pequeño Pokemon. Cual es tu nombre?',
-            pokemon: { none: '' , pikachu: `
+                name: '',
+                nivel1: false,
+                picked: 'none',
+                message: 'Buenos Dias Pequeño Pokemon. Cual es tu nombre?',
+                pokemon: { 
+                    none: '' , 
+                    pikachu: `
 $$$b  '---.__
   "$$b        '--.                          ___.---uuudP
    '$$b           '.__.------.__     __.---'      $$$$"              .
@@ -146,8 +157,44 @@ $$$b  '---.__
  _|    '-'   _,' "'--.._________|        ','    _ /.
 //\\   ,-._.'"/\\__,.   _,"     /_\\__/'. /'.-.'.-/_,'-' mh
 '-"'"' v'    '"  '-'-"              '-''-'  ''
+`,
+Chirazard: `
+              _.--""'-..
+            ,'          '.
+          ,'          __  '.
+         /|          " __   \
+        , |           / |.   .
+        |,'          !_.'|   |
+      ,'             '   |   |
+     /              |'--'|   |
+    |                '---'   |
+     .   ,                   |                       ,".
+      ._     '           _'  |                    , ' \ '
+  '.. '.'-...___,...---""    |       __,.        ,'"   L,|
+  |, '- .'._        _,-,.'   .  __.-'-. /        .   ,    \
+-:..     '. '-..--_.,.<       '"      / '.        '-/ |   .
+  ',         """"'     '.              ,'         |   |  ',,
+    '.      '            '            /          '    |'. |/
+      '.   |              \       _,-'           |       ''
+        '._'               \   '"\                .      |
+           |                '     \                '._  ,'
+           |                 '     \                 .'|
+           |                 .      \                | |
+           |                 |       L              ,' |
+           '                 |       |             /   '
+            \                |       |           ,'   /
+          ,' \               |  _.._ ,-..___,..-'    ,'
+         /     .             .      '!             ,j'
+        /       '.          /        .           .'/
+       .          '.       /         |        _.'.'
+        '.          7''---'          |------"'_.'
+       _,.',_     _'                ,''-----"'
+   _,-_    '       '.     .'      ,\
+   -" /'.         _,'     | _  _  _.|
+    ""--'---"""""'        '' '! |! /
+                            '" " -'
 `}
-            }
+}
 
         },
         methods: {
